@@ -13,14 +13,14 @@ from detectron2.data import MetadataCatalog
 from detectron2.engine import DefaultPredictor
 from detectron2.structures import Instances
 from detectron2.utils.visualizer import Visualizer, VisImage
-# from UniT.configs import add_config
+from UniT.configs import add_config
 
 def test_model(base_model, images):
     cfg: CfgNode = get_cfg()
     cfg.merge_from_file(model_zoo.get_config_file(base_model))
     # add_config(cfg)
     # cfg.merge_from_file(base_model)
-    # cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.4
+    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.4
     cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url(base_model)
     cfg.MODEL.DEVICE = 'cpu'
     predictor: DefaultPredictor = DefaultPredictor(cfg)
@@ -29,7 +29,7 @@ def test_model(base_model, images):
 
     image_file: str
     for image_file in images:
-        print("imgae file: ", image_file)
+        print("image file: ", image_file)
         img: np.ndarray = cv2.imread(image_file)
 
         output: Instances = predictor(img)["instances"]
