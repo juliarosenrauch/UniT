@@ -1,19 +1,16 @@
-from http.client import UnknownTransferEncoding
+
 import os
 from os.path import join
 
 import streamlit as st
 import markdowns
 
-import pandas as pd
 import numpy as np
-from PIL import Image
 import sys
 sys.path.insert(0, '../../')
 sys.path.insert(0, '../')
-from scripts import run_image
 from scripts import visualize
-import time
+
 
 path = os.path.dirname(__file__)
 ROOT_DIR = path+'/images'
@@ -29,7 +26,6 @@ img_data = [
 
 global imgs 
 imgs = [open(i, 'rb').read() for i in img_data]
-print("imgs type: ", type(imgs))
 
 global model_paths
 model_paths = ["../configs/VOC/demo_config_VOC.yaml", 
@@ -46,46 +42,35 @@ def setup_models(model_paths):
 
 def main():
     st.set_page_config(page_title="UniT Model Demo",
-                        page_icon=path+"/images/cvlab.png",
+                        page_icon=open(join(ROOT_DIR,'select_images/cvlab.png'), 'rb').read(),
                         layout="wide")
     
     st.markdown(markdowns.reconstruction_style, unsafe_allow_html=True)
-
-    #st.markdown(markdowns.remove_padding, unsafe_allow_html=True)
-
     st.markdown(markdowns.hide_decoration_bar_style, unsafe_allow_html=True)
-    
     st.markdown(markdowns.hide_main_menu, unsafe_allow_html=True)
-
     st.markdown(markdowns.page_title, unsafe_allow_html=True)
     st.markdown(markdowns.cv_group_title, unsafe_allow_html=True)
     
-    # background on image level vs instance level annotation
-    # wouldn't it be nice to be able to transfer knowledge from base classes to novel!
     st.markdown(markdowns.motivation_title, unsafe_allow_html=True)
     with st.expander("See more"):
         st.markdown(markdowns.motivation_string, unsafe_allow_html=True)
-        bcol1, bcol2, bcol3 = st.columns([1, 1, 1])
-        bcol2.image(path+"/images/image_vs_instance.png", width=550)
+        _, bcol2, _ = st.columns([1, 1, 1])
+        bcol2.image(open(join(ROOT_DIR,'select_images/image_vs_instance.png'), 'rb').read(), use_column_width=True)
 
-
-    # theory on UniT paper
     st.markdown(markdowns.unit_title, unsafe_allow_html=True)
     with st.expander("See more"):
         st.markdown(markdowns.unit_string, unsafe_allow_html=True)
-        bcol1, bcol2, bcol3 = st.columns([1, 1, 1])
-        bcol2.image(path+"/images/unit.png", width=550)
-
-    # select image of provided images
-
-    #st.image(imgs, width=250, caption=[1,2,3,4,5,6])
+        st.write("For more details, check out the paper [here](https://arxiv.org/pdf/2006.07502.pdf).")
+        _, bcol2, _ = st.columns([1, 1, 1])
+        bcol2.image(open(join(ROOT_DIR,'select_images/unit.png'), 'rb').read(), use_column_width=True)
 
     model_configs = setup_models(model_paths)
+
     st.markdown(markdowns.object_selection_header, unsafe_allow_html=True)
 
     image_columns = st.columns([1,1,1,1,1,1])
     for i, col in enumerate(image_columns):
-        col.image(imgs[i], width=200)
+        col.image(imgs[i], use_column_width=True)
 
     selection_columns = st.columns([1,1,1,1,1,1])
     checkboxkey = ['1','2','3','4','5','6']
@@ -109,9 +94,8 @@ def main():
 
         images_to_run.append(uploaded_file_path)
 
-        st.image(bytes_data,
-                 caption=uploaded_file.name,
-                 width=350)
+        _, col_uploaded, _ = st.columns([2, 1, 2])
+        col_uploaded.image(bytes_data,caption=uploaded_file.name,use_column_width=True)
 
     st.markdown(markdowns.choose_model_header, unsafe_allow_html=True)
     model_options = ("None", "VOC", "COCO")
@@ -135,7 +119,11 @@ def main():
         if len(selected_model) == 0 or selected_model == "None":
             st.markdown(markdowns.choose_model_again_line, unsafe_allow_html=True)
             return
-        show_rec = True
+
+        if len(np.where(selected)[0]) != 0:
+            show_rec = True
+        else:
+            st.markdown(markdowns.try_again_line, unsafe_allow_html=True)
         
         result_images = []
         xml_results = []
@@ -150,9 +138,9 @@ def main():
         if len(np.where(selected)[0]) != 0:
             st.markdown(markdowns.results_line, unsafe_allow_html=True)
             for i in range(len(images_to_run)):
-                i1, i2 = st.columns([1, 1])
-                i1.image(open(images_to_run[i], 'rb').read(), width=400)
-                i2.image(result_images[i], width=400)
+                i1, i2, i3, i4, i5 = st.columns([1,1,1,1,1])
+                i2.image(open(images_to_run[i], 'rb').read(), use_column_width=True)
+                i4.image(result_images[i], use_column_width=True)
         else:
             st.markdown(markdowns.try_again_line, unsafe_allow_html=True)
 

@@ -40,9 +40,9 @@ which are difficult and time-consuming to collect. These are annotations that de
 
 <p align="left">In the below image, we see two types of annotations. Image level annotations label an image simply as containing various classes of data and are 
 much easier to obtain (think: Google search of a sheep = lots of image level sheep annotations). Instance level annotations, require much more 
-time and effort to obtain. In general, there are a lot of available image level annotations, and few instance level annotations.</p>
+time and effort to collect. In general, there are a lot of available image level annotations, and few instance level annotations.</p>
 
-<p align="center">Wouldn't it be great if we could somehow use our abundance of image level annotations to train models for object detection?</p>"""
+<h5 align="center">Wouldn't it be great if we could somehow use our abundance of image level annotations to train models for object detection?</h5>"""
 
 
 unit_title = """<h3 align="left">Unified Knowledge Transfer for Any-shot Object Detection and Segmentation</h3>"""
@@ -57,9 +57,7 @@ similarities between the novel and base classes, we transfer those mappings to o
 instance-level annotated samples, if available. The overall model is end-to-end trainable and highly flexible.</p>
 
 <p align="left">For example, we may have access to an abundance of instance-level segmentations (think: pixel labels) of sheep, a base class in this case, but few instance 
-level segmentations of goats, a novel class. UniT would learn the visual and lingual similarities between goats and sheep and allow us to perform more accurate object detection.</p>
-
-<p align="left">For more details, check out the paper here. </p>"""
+level segmentations of goats, a novel class. UniT would learn the visual and lingual similarities between goats and sheep and allow us to perform more accurate object detection.</p>"""
 
 object_selection_header = """<h3 align="left" style="margin-top: 3rem;">To begin identifying objects, select an image</h3>"""
 
@@ -91,8 +89,9 @@ button_style = """
         padding: 0.5rem 0.5rem;
         background-color: #ffffff;
         color: black;
-        margin: 60px 0px;
+        margin: 0 auto;
         border: solid 1px gray;
+        align-items: center;
         width: 200px;
         font-size: 22px;
         transition-duration: 0.2s

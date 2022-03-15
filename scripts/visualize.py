@@ -1,14 +1,8 @@
-from operator import mod
-import detectron2
-
-# import some common libraries
 import numpy as np
 import cv2
-import re
 import json
 import sys
 import os
-import random
 import torch
 from typing import Any, Dict
 
@@ -24,19 +18,11 @@ from detectron2.utils.visualizer import Visualizer
 from detectron2.checkpoint import DetectionCheckpointer
 from UniT.configs import add_config
 from dict2xml import dict2xml
-from lxml import etree
 from collections import OrderedDict
-
-# from detectron2.data.datasets.pascal_voc import register_pascal_voc
 
 from detectron2.data import detection_utils as utils
 import detectron2.data.transforms as T
 from detectron2.utils.visualizer import ColorMode
-
-# def register_voc_data(args):
-#     register_pascal_voc("pascal_trainval_2007", args.DATASETS.CLASSIFIER_DATAROOT + 'VOC2007/', 'trainval', 2007)
-#     register_pascal_voc("pascal_trainval_2012", args.DATASETS.CLASSIFIER_DATAROOT + 'VOC2012/', 'trainval', 2012)
-#     register_pascal_voc("pascal_test_2007", args.DATASETS.CLASSIFIER_DATAROOT + 'VOC2007/', 'test', 2007)
 
 def setup(config_file):
     cfg = get_cfg()
@@ -53,7 +39,7 @@ class VizPredictor:
     def __init__(self, cfg):
         cfg.defrost()
         cfg.MODEL.DEVICE = "cpu"
-        self.cfg = cfg.clone()  # cfg can be modified by model
+        self.cfg = cfg.clone() 
         self.viz_folder = cfg.OUTPUT_DIR +'/viz'
         os.makedirs(self.viz_folder, exist_ok=True)
 
@@ -113,8 +99,8 @@ class VizPredictor:
                         scale=1.0,
                         instance_mode=ColorMode.SEGMENTATION)
             v = v.draw_instance_predictions(prediction["instances"].to("cpu"))
-            test_img = v.get_image()[:, :, ::-1]
-            # test_img = v.get_image()[:, :, :]
+            # test_img = v.get_image()[:, :, ::-1]
+            test_img = v.get_image()[:, :, :]
             cv2.imshow("result", test_img)
             # cv2.waitKey(0)
             # cv2.destroyAllWindows()
