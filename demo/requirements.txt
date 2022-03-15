@@ -8,4 +8,5 @@ opencv-python-headless==4.5.5.62
 pycocotools==2.0.2
 pycparser==2.20
 streamlit==1.7.0
-torch==1.10.2
+torch
+torchvision
