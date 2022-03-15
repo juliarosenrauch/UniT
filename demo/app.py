@@ -12,33 +12,37 @@ import sys
 sys.path.insert(0, '../../')
 sys.path.insert(0, '../')
 from scripts import run_image
+from scripts import visualize
+import time
 
 path = os.path.dirname(__file__)
-ROOT_DIR = path+'\images'
+ROOT_DIR = path+'/images'
 
 img_data = [
-    join(ROOT_DIR, r'select_images\bus.jpg'),
-    join(ROOT_DIR, r'select_images\couch.jpg'),
-    join(ROOT_DIR, r'select_images\fruits.jpg'),
-    join(ROOT_DIR, r'select_images\sheep.jpg'),
-    join(ROOT_DIR, r'select_images\tennis.jpg'),
-    join(ROOT_DIR, r'select_images\umbrella.jpg')
+    join(ROOT_DIR, 'select_images/S.jpg'),
+    join(ROOT_DIR, 'select_images/E.jpg'),
+    join(ROOT_DIR, 'select_images/F.jpg'),
+    join(ROOT_DIR, 'select_images/K.jpg'),
+    join(ROOT_DIR, 'select_images/L.jpg'),
+    join(ROOT_DIR, 'select_images/R.jpg')
 ]
 
 global imgs 
 imgs = [open(i, 'rb').read() for i in img_data]
 print("imgs type: ", type(imgs))
 
-loaded_images = {
-    "bus": imgs[0],
-    "couch": imgs[1],
-    "fruits": imgs[2],
-    "sheep": imgs[3],
-    "tennis": imgs[4],
-    "umbrella": imgs[5],
-}
+global model_paths
+model_paths = ["../configs/VOC/demo_config_VOC.yaml", 
+               "../configs/COCO/demo_config_COCO.yaml"]
 
 show_rec = False
+
+@st.cache(allow_output_mutation=True)
+def setup_models(model_paths):
+    configs = []
+    for path in model_paths:
+        configs.append(visualize.setup(path))
+    return configs
 
 def main():
     st.set_page_config(page_title="UniT Model Demo",
@@ -62,9 +66,7 @@ def main():
     with st.expander("See more"):
         st.markdown(markdowns.motivation_string, unsafe_allow_html=True)
         bcol1, bcol2, bcol3 = st.columns([1, 1, 1])
-        bcol2.image(path+r'\images\image_vs_instance.png', width=550)
-
-    # intro to UBC computer vision lab
+        bcol2.image(path+"/images/image_vs_instance.png", width=550)
 
 
     # theory on UniT paper
@@ -72,25 +74,13 @@ def main():
     with st.expander("See more"):
         st.markdown(markdowns.unit_string, unsafe_allow_html=True)
         bcol1, bcol2, bcol3 = st.columns([1, 1, 1])
-        bcol2.image(path+r'\images\unit.png', width=550)
+        bcol2.image(path+"/images/unit.png", width=550)
 
     # select image of provided images
 
-    # st.markdown(markdowns.object_selection_header, unsafe_allow_html=True)
-    # radio_selection_col, image_selection_col, col3 = st.columns([2, 1, 1])
-    # col1, col2, col3, col4, col5, col6 = st.columns([1,1,1,1,1,1])
-    # with radio_selection_col:
-    #     st.write(markdowns.radio_selection_styles, unsafe_allow_html=True)
-    #     selected_image = st.radio("", list(loaded_images.keys()))
-
-    # with image_selection_col:
-    #     st.image(loaded_images[selected_image],
-    #             caption='Selected Object',
-    #             width=350)
-
     #st.image(imgs, width=250, caption=[1,2,3,4,5,6])
 
-
+    model_configs = setup_models(model_paths)
     st.markdown(markdowns.object_selection_header, unsafe_allow_html=True)
 
     image_columns = st.columns([1,1,1,1,1,1])
@@ -124,23 +114,21 @@ def main():
                  width=350)
 
     st.markdown(markdowns.choose_model_header, unsafe_allow_html=True)
-    model_options = ("None", "Pre-trained A", "Pre-trained B")
+    model_options = ("None", "VOC", "COCO")
     st.write(markdowns.selectbox_styles, unsafe_allow_html=True)
     selected_model = st.selectbox("Model options", model_options)
 
-    model_path = ""
-    if selected_model == "Pre-trained A":
-        model_path = "COCO-InstanceSegmentation/mask_rcnn_R_101_FPN_3x.yaml"
-    elif selected_model == "Pre-trained B":
-        model_path = "COCO-InstanceSegmentation/mask_rcnn_R_101_FPN_3x.yaml"
-    # if len(selected_model) == 0 or selected_model == "None":
-    #     return
-        # background on model
+    model_cfg = None
+    
+    if selected_model == "VOC":
+        model_cfg = model_configs[0]
+
+    elif selected_model == "COCO":
+        model_cfg = model_configs[1]
 
     # RUN!
-    col1, col2, col3 = st.columns([1, 1, 1])
+    _, col2, _ = st.columns([1, 1, 1])
     st.markdown(markdowns.button_style, unsafe_allow_html=True)
-
 
     global show_rec
     if col2.button("Run Model"):
@@ -148,8 +136,15 @@ def main():
             st.markdown(markdowns.choose_model_again_line, unsafe_allow_html=True)
             return
         show_rec = True
-        # run the model here.. use selected_model
-        result_images= run_image.test_model(model_path, images_to_run)
+        
+        result_images = []
+        xml_results = []
+
+        with st.spinner(text="Hold tight! It's running..."):
+            for image in images_to_run:
+                result_image, xml_result = visualize.main(model_cfg, image)
+                result_images.append(result_image)
+                xml_results.append(xml_result)
 
     if show_rec:
         if len(np.where(selected)[0]) != 0:
@@ -162,14 +157,14 @@ def main():
             st.markdown(markdowns.try_again_line, unsafe_allow_html=True)
 
 
-    col1, col2, col3 = st.columns([1, 1, 1])
-    with col2:
-        st.markdown(markdowns.button_style, unsafe_allow_html=True)
-        st.download_button(
-            label = 'Download results', 
-            data = '''text_contents''', 
-            file_name = "unit_demo_results.xml", 
-            mime='application/xml')
+        _, col2, _ = st.columns([1, 1, 1])
+        with col2:
+            st.markdown(markdowns.button_style, unsafe_allow_html=True)
+            st.download_button(
+                label = 'Download results', 
+                data = xml_result, 
+                file_name = "unit_demo_results.xml", 
+                mime='application/xml')
 
     st.text("")
 

@@ -1,8 +1,8 @@
 _BASE_: "../Base-RCNN-C4.yaml"
 MODEL:
-  WEIGHTS: "../models/resnet_101_MSRA_C4.pth"
+  WEIGHTS: "C:/Users/Julia Rosenrauch/Desktop/ENPH479/UniT/models/VOC_split1.pth"
   META_ARCHITECTURE: "WeaklySupervisedRCNNNoMeta"
-  MASK_ON: False
+  MASK_ON: True
   BACKBONE: 
     FREEZE_AT: 2
     NAME: 'build_resnet_backbone'
@@ -12,7 +12,7 @@ MODEL:
     NAME: "WSROIHeadNoMeta"
     MULTI_BOX_HEAD: True
     NUM_CLASSES: 20
-    EMBEDDING_PATH: "../data/embeddings/glove_mean"
+    EMBEDDING_PATH: "C:/Users/Julia Rosenrauch/Desktop/ENPH479/UniT/data/embeddings/glove_mean"
     FAST_RCNN:
       NAME: "SupervisedDetectorOutputsBase"
       WEAK_DETECTOR:

@@ -33,20 +33,33 @@ cv_group_title = """<h2 align="center">UBC Computer Vision Group</h2>"""
 
 motivation_title = """<h3 align="left">Motivation</h3>"""
 
-motivation_string = """<p align="left">Few instance level annotations, abundant image level annotations.</p>"""
+motivation_string = """<p align="left">What is object detection? Object detection is a field of computer vision that deals with the localization and 
+classification of objects contained in an image. Methods for object detection rely on a large amount of instance-level annotations for training, 
+which are difficult and time-consuming to collect. These are annotations that define which pixels of an image belong to various classes of data 
+(for example, sheep) and labels them as such. </p>
+
+<p align="left">In the below image, we see two types of annotations. Image level annotations label an image simply as containing various classes of data and are 
+much easier to obtain (think: Google search of a sheep = lots of image level sheep annotations). Instance level annotations, require much more 
+time and effort to obtain. In general, there are a lot of available image level annotations, and few instance level annotations.</p>
+
+<p align="center">Wouldn't it be great if we could somehow use our abundance of image level annotations to train models for object detection?</p>"""
 
 
 unit_title = """<h3 align="left">Unified Knowledge Transfer for Any-shot Object Detection and Segmentation</h3>"""
 
-unit_string = """<p align="left">Methods for object detection and segmentation rely on large scale instance-level annotations for training, which 
-        are difficult and time-consuming to collect. Efforts to alleviate this look at varying degrees and quality of supervision. 
-        Weakly-supervised approaches draw on image-level labels to build detectors/segmentors, while zero/few-shot methods assume abundant instance-level data for a set of base classes,
-        and none to a few examples for novel classes. This taxonomy has largely siloed algorithmic designs. In this work, we aim
-        to bridge this divide by proposing an intuitive and unified semi-supervised model that is applicable to a range of supervision: from zero to a few instance-level samples per novel
-        class. For base classes, our model learns a mapping from weakly-supervised to fully-supervised detectors/segmentors.
-        By learning and leveraging visual and lingual similarities between the novel and base classes, we transfer those mappings
-        to obtain detectors/segmentors for novel classes; refining them with a few novel class instance-level annotated samples, if available. The overall model is end-to-end trainable
-        and highly flexible.</p>"""
+unit_string = """<p align="left">This is an area that Dr. Leonid Sigal and his graduate students, Siddhesh Khandelwal and Raghav Goyal, at the University 
+of British Columbia's Computer Vision Lab have been actively working on. In March 2021, they published "UniT: Unified Knowledge Transfer for Any-shot Object 
+Detection and Segmentation", a paper describing a model that maps similarities from base classes - those with an abundance of both image and instance level data, 
+to novel classes - those with image level data but only zero to a few samples of instance-level data.</p>
+
+<p align="left">For base classes, the UniT model learns a mapping from weakly-supervised to fully-supervised detectors/segmentors. By learning and leveraging visual and lingual 
+similarities between the novel and base classes, we transfer those mappings to obtain detectors/segmentors for novel classes; refining them with a few novel class 
+instance-level annotated samples, if available. The overall model is end-to-end trainable and highly flexible.</p>
+
+<p align="left">For example, we may have access to an abundance of instance-level segmentations (think: pixel labels) of sheep, a base class in this case, but few instance 
+level segmentations of goats, a novel class. UniT would learn the visual and lingual similarities between goats and sheep and allow us to perform more accurate object detection.</p>
+
+<p align="left">For more details, check out the paper here. </p>"""
 
 object_selection_header = """<h3 align="left" style="margin-top: 3rem;">To begin identifying objects, select an image</h3>"""
 
@@ -99,6 +112,8 @@ button_style = """
 </style>
 """
 choose_model_again_line = """<h4 align="center" style="color:blue">Please choose a model and run again!</h4>"""
+
+running_line = """<h5 align="center" Just a second! It's running..."""
 
 results_line = """<h4 align="center">Below is your image and the results from the model.</h4>"""
 
