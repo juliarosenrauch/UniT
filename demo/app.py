@@ -9,7 +9,7 @@ import numpy as np
 import sys
 sys.path.insert(0, '../../')
 sys.path.insert(0, '../')
-from UniT.scripts import visualize
+from .scripts import visualize
 
 path = os.path.dirname(__file__)
 ROOT_DIR = path+'/images'
