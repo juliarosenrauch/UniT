@@ -6,12 +6,12 @@ channels:
 dependencies:
   - conda:
     - cudatoolkit==11.3.1
-  - pip:
-    - numpy==1.21.2
     - python==3.9.7
     - pytorch==1.10.2
     - torchaudio==0.10.2
     - torchvision==0.11.3
+  - pip:
+    - numpy==1.21.2
     - cachetools==4.2.4
     - detectron2==0.6
     - dict2xml==1.7.1
