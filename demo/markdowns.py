@@ -91,10 +91,12 @@ button_style = """
         color: black;
         margin: 0 auto;
         border: solid 1px gray;
-        align-items: center;
         width: 200px;
         font-size: 22px;
         transition-duration: 0.2s
+        position:relative;
+        top:50%; 
+        left:50%;
     }
     button:hover {
         font-weight: 500;

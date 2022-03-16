@@ -13,7 +13,7 @@ dependencies:
   - pip:
     - numpy==1.21.2
     - cachetools==4.2.4
-    - detectron2==0.6
+    - detectron2 @ git+https://github.com/facebookresearch/detectron2.git
     - dict2xml==1.7.1
     - imantics==0.1.12
     - markdown==3.3.6

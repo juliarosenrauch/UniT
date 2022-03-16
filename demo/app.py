@@ -1,6 +1,7 @@
 
 import os
 from os.path import join
+from urllib.parse import uses_relative
 
 import streamlit as st
 import markdowns
@@ -110,19 +111,21 @@ def main():
         model_cfg = model_configs[1]
 
     # RUN!
-    _, col2, _ = st.columns([1, 1, 1])
+    _, col_button, _ = st.columns([3, 1, 3])
     st.markdown(markdowns.button_style, unsafe_allow_html=True)
 
     global show_rec
-    if col2.button("Run Model"):
+    if col_button.button("Run Model"):
         if len(selected_model) == 0 or selected_model == "None":
-            st.markdown(markdowns.choose_model_again_line, unsafe_allow_html=True)
+            # st.markdown(markdowns.choose_model_again_line, unsafe_allow_html=True)
+            st.error("Please choose a model and run again!")
             return
 
         if len(np.where(selected)[0]) != 0:
             show_rec = True
         else:
-            st.markdown(markdowns.try_again_line, unsafe_allow_html=True)
+            # st.markdown(markdowns.try_again_line, unsafe_allow_html=True)
+            st.error("Please select or upload an image above and run again!")
         
         result_images = []
         xml_results = []
@@ -141,11 +144,12 @@ def main():
                 i2.image(open(images_to_run[i], 'rb').read(), use_column_width=True)
                 i4.image(result_images[i], use_column_width=True)
         else:
-            st.markdown(markdowns.try_again_line, unsafe_allow_html=True)
+            # st.markdown(markdowns.try_again_line, unsafe_allow_html=True)
+            st.error("Please select or upload an image above and run again!")
 
 
-        _, col2, _ = st.columns([1, 1, 1])
-        with col2:
+        _, col_dl, _ = st.columns([4, 1, 4])
+        with col_dl:
             st.markdown(markdowns.button_style, unsafe_allow_html=True)
             st.download_button(
                 label = 'Download results', 

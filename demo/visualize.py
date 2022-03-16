@@ -19,6 +19,7 @@ from detectron2.checkpoint import DetectionCheckpointer
 from UniT.configs import add_config
 from dict2xml import dict2xml
 from collections import OrderedDict
+from xml.etree import ElementTree as ET
 
 from detectron2.data import detection_utils as utils
 import detectron2.data.transforms as T
@@ -179,6 +180,16 @@ def convert_instances_to_xml(prediction):
     # # ET.SubElement(fields, "pred_masks").text = prediction['instances'].pred_masks.tolist()
     # return etree.tostring(root, pretty_print=True)
 
+def combine_xmls(list_of_xmls):
+    first = None
+    for xml in list_of_xmls:
+        data = ET.fromstring(xml).getroot()
+        if first is None:
+            first = data
+        else:
+            first.extend(data)
+    if first is not None:
+        return ET.tostring(first)
 
 def main(cfg, image_path):
     predictor = VizPredictor(cfg)
