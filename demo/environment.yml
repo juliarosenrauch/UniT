@@ -21,8 +21,6 @@ dependencies:
     - opencv-python-headless==4.5.5.62
     - pycocotools==2.0.2
     - pycparser==2.20
-    - pywin32==302
-    - pywinpty==1.1.4
     - scikit-image==0.18.3
     - scikit-learn==1.0
     - scipy==1.7.1
