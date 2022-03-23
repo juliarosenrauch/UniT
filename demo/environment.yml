@@ -15,5 +15,5 @@ dependencies:
     - dict2xml==1.7.1
     - opencv-python-headless==4.5.5.62
     - pycparser==2.20
-    - streamlit==1.7.0
+    - streamlit==1.6.0
 prefix: C:\Users\Julia Rosenrauch\anaconda3\envs\capstone
