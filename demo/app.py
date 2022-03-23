@@ -1,7 +1,6 @@
 
 import os
 from os.path import join
-from urllib.parse import uses_relative
 
 import streamlit as st
 import markdowns
