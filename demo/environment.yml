@@ -17,7 +17,7 @@ dependencies:
     - dict2xml==1.7.1
     - imantics==0.1.12
     - markdown==3.3.6
-    - opencv-python-headless
+    - opencv-contrib-python
     - pycocotools==2.0.2
     - pycparser==2.20
     - scikit-image==0.18.3
