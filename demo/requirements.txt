@@ -1,0 +1,9 @@
+detectron2 @ git+https://github.com/facebookresearch/detectron2.git
+dict2xml==1.7.1
+numpy==1.21.2
+opencv-python==4.5.5.64
+opencv-python-headless==4.5.5.62
+pycparser==2.20
+python==3.9.7
+streamlit==1.7.0
+torch==1.10.2
