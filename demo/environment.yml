@@ -7,7 +7,7 @@ dependencies:
   - conda:
     - pytorch==1.10.2
   - pip:
-    - numpy==1.22.3
+    - numpy==1.21.5
     - detectron2 @ git+https://github.com/facebookresearch/detectron2.git
     - dict2xml==1.7.0
     - opencv-python-headless==4.5.5.64
