@@ -4,9 +4,9 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - conda:
-    - pip
-    - pytorch==1.10.2
+  . python==3.9
+  - pip
+  - pytorch==1.10.2
   - pip:
     - numpy==1.22.3
     - detectron2 @ git+https://github.com/facebookresearch/detectron2.git
