@@ -21,7 +21,7 @@ ROOT_DIR = os.path.join(path, 'images')
 
 img_data = [
     os.path.join(ROOT_DIR, 'select_images', 'S.jpg'),
-    os.path.join(ROOT_DIR, 'select_images', 'E.jpg'),
+    os.path.join(ROOT_DIR, 'select_images', 'E.JPG'),
     os.path.join(ROOT_DIR, 'select_images', 'F.jpg'),
     os.path.join(ROOT_DIR, 'select_images', 'K.jpg'),
     os.path.join(ROOT_DIR, 'select_images', 'L.jpg'),
