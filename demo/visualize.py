@@ -18,7 +18,7 @@ from detectron2.evaluation import inference_context
 from detectron2.modeling import build_model
 from detectron2.utils.visualizer import Visualizer
 from detectron2.checkpoint import DetectionCheckpointer
-from UniT.configs import add_config
+from configs import add_config
 from dict2xml import dict2xml
 from collections import OrderedDict
 from xml.etree import ElementTree as ET
