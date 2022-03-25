@@ -36,7 +36,6 @@ show_rec = False
 def setup_models(model_paths):
     configs = []
     for path in model_paths:
-        print(path)
         configs.append(visualize.setup(path))
     return configs
 
