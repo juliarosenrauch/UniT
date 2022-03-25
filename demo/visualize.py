@@ -1,15 +1,19 @@
-#!home/appuser/venv/bin/python
-
 import numpy as np
 import cv2
 import json
 import sys
 import os
+import inspect
 import torch
 from typing import Any, Dict
 
-sys.path.insert(0, '../../')
-sys.path.insert(0, '../')
+# sys.path.insert(0, '../../')
+# sys.path.insert(0, '../')
+
+# dirty hack for importing local modules from parent directory:
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0, parentdir) 
 
 from detectron2.config import get_cfg
 from detectron2.data import MetadataCatalog
@@ -18,7 +22,7 @@ from detectron2.evaluation import inference_context
 from detectron2.modeling import build_model
 from detectron2.utils.visualizer import Visualizer
 from detectron2.checkpoint import DetectionCheckpointer
-from ..configs import add_config
+from configs import add_config
 from dict2xml import dict2xml
 from collections import OrderedDict
 from xml.etree import ElementTree as ET
