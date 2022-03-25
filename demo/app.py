@@ -1,6 +1,4 @@
-
 import os
-from os.path import join
 
 import streamlit as st
 import markdowns
@@ -15,20 +13,19 @@ import torch
 from typing import Any, Dict
 
 import sys
-# sys.path.insert(0, '../../')
-# sys.path.insert(0, '../')
+
 import visualize
 
 path = os.path.dirname(__file__)
-ROOT_DIR = path+'/images'
+ROOT_DIR = os.path.join(path, 'images')
 
 img_data = [
-    join(ROOT_DIR, 'select_images/S.jpg'),
-    join(ROOT_DIR, 'select_images/E.jpg'),
-    join(ROOT_DIR, 'select_images/F.jpg'),
-    join(ROOT_DIR, 'select_images/K.jpg'),
-    join(ROOT_DIR, 'select_images/L.jpg'),
-    join(ROOT_DIR, 'select_images/R.jpg')
+    os.path.join(ROOT_DIR, 'select_images', 'S.jpg'),
+    os.path.join(ROOT_DIR, 'select_images', 'E.jpg'),
+    os.path.join(ROOT_DIR, 'select_images', 'F.jpg'),
+    os.path.join(ROOT_DIR, 'select_images', 'K.jpg'),
+    os.path.join(ROOT_DIR, 'select_images', 'L.jpg'),
+    os.path.join(ROOT_DIR, 'select_images', 'R.jpg')
 ]
 
 global imgs 
@@ -49,7 +46,7 @@ def setup_models(model_paths):
 
 def main():
     st.set_page_config(page_title="UniT Model Demo",
-                        page_icon=open(join(ROOT_DIR,'select_images/cvlab.png'), 'rb').read(),
+                        page_icon=open(os.path.join(ROOT_DIR, 'select_images', 'cvlab.png'), 'rb').read(),
                         layout="wide")
     
     st.markdown(markdowns.reconstruction_style, unsafe_allow_html=True)
@@ -62,14 +59,14 @@ def main():
     with st.expander("See more"):
         st.markdown(markdowns.motivation_string, unsafe_allow_html=True)
         _, bcol2, _ = st.columns([1, 1, 1])
-        bcol2.image(open(join(ROOT_DIR,'select_images/image_vs_instance.png'), 'rb').read(), use_column_width=True)
+        bcol2.image(open(os.path.join(ROOT_DIR, 'select_images', 'image_vs_instance.png'), 'rb').read(), use_column_width=True)
 
     st.markdown(markdowns.unit_title, unsafe_allow_html=True)
     with st.expander("See more"):
         st.markdown(markdowns.unit_string, unsafe_allow_html=True)
         st.write("For more details, check out the paper [here](https://arxiv.org/pdf/2006.07502.pdf).")
         _, bcol2, _ = st.columns([1, 1, 1])
-        bcol2.image(open(join(ROOT_DIR,'select_images/unit.png'), 'rb').read(), use_column_width=True)
+        bcol2.image(open(os.path.join(ROOT_DIR, 'select_images' , 'unit.png'), 'rb').read(), use_column_width=True)
 
     model_configs = setup_models(model_paths)
 
@@ -95,7 +92,7 @@ def main():
     uploaded_files = st.file_uploader("Choose a file", accept_multiple_files=True, type=['png','jpeg','jpg'])
     for uploaded_file in uploaded_files:
         bytes_data = uploaded_file.read()
-        uploaded_file_path = os.path.join(ROOT_DIR,uploaded_file.name)
+        uploaded_file_path = os.path.join(ROOT_DIR, uploaded_file.name)
         with open(uploaded_file_path,"wb") as f: 
             f.write(uploaded_file.getbuffer()) 
 
