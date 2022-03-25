@@ -6,3 +6,4 @@ dict2xml==1.7.1
 opencv-python-headless==4.5.5.64
 pycparser==2.21
 streamlit==1.8.0
+https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.10/detectron2-0.6%2Bcpu-cp39-cp39-linux_x86_64.whl
