@@ -27,7 +27,6 @@ from dict2xml import dict2xml
 from collections import OrderedDict
 from xml.etree import ElementTree as ET
 
-import detectron2.WeaklySupervisedRCNNNoMeta.meta_arch
 from detectron2.data import detection_utils as utils
 import detectron2.data.transforms as T
 from detectron2.utils.visualizer import ColorMode
