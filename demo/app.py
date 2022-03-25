@@ -1,23 +1,18 @@
 import os
-
-import streamlit as st
-import markdowns
-
-import numpy as np
-
-import cv2
-import json
 import sys
-import os
-import torch
+import json
 from typing import Any, Dict
 
-import sys
+import cv2
+import torch
+import numpy as np
+import streamlit as st
 
+import markdowns
 import visualize
 
-path = os.path.dirname(__file__)
-ROOT_DIR = os.path.join(path, 'images')
+filepath = os.path.dirname(__file__)
+ROOT_DIR = os.path.join(filepath, 'images')
 
 img_data = [
     os.path.join(ROOT_DIR, 'select_images', 'S.jpg'),
@@ -32,8 +27,8 @@ global imgs
 imgs = [open(i, 'rb').read() for i in img_data]
 
 global model_paths
-model_paths = ["../configs/VOC/demo_config_VOC.yaml", 
-               "../configs/COCO/demo_config_COCO.yaml"]
+model_paths = [os.path.join(filepath, '..', 'configs', 'VOC', 'demo_config_VOC.yaml', 
+               os.path.join(filepath, '..', 'configs', 'COCO' 'demo_config_COCO.yaml']
 
 show_rec = False
 
