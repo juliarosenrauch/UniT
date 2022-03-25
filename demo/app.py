@@ -28,7 +28,7 @@ imgs = [open(i, 'rb').read() for i in img_data]
 
 global model_paths
 model_paths = [os.path.join(filepath, '..', 'configs', 'VOC', 'demo_config_VOC.yaml'), 
-               os.path.join(filepath, '..', 'configs', 'COCO' 'demo_config_COCO.yaml')]
+               os.path.join(filepath, '..', 'configs', 'COCO', 'demo_config_COCO.yaml')]
 
 show_rec = False
 
