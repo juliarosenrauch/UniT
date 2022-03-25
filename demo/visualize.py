@@ -10,10 +10,10 @@ from typing import Any, Dict
 # sys.path.insert(0, '../../')
 # sys.path.insert(0, '../')
 
-# dirty hack for importing local modules from parent directory:
+# hack for importing local modules from parent directory:
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir) 
+sys.path.insert(0, parentdir)
 
 from detectron2.config import get_cfg
 from detectron2.data import MetadataCatalog
@@ -46,8 +46,8 @@ class VizPredictor:
     def __init__(self, cfg):
         cfg.defrost()
         cfg.MODEL.DEVICE = "cpu"
-        self.cfg = cfg.clone() 
-        self.viz_folder = cfg.OUTPUT_DIR +'/viz'
+        self.cfg = cfg.clone()
+        self.viz_folder = os.path.join(cfg.OUTPUT_DIR, 'viz')
         os.makedirs(self.viz_folder, exist_ok=True)
 
         labels = []
@@ -55,13 +55,13 @@ class VizPredictor:
         if type.get("name") == 'VOC':
             labels = ["aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair", "cow", "diningtable", "dog", "horse", "motorbike", "person", "pottedplant", "sheep", "sofa", "train", "tvmonitor"]
         elif type.get("name") == 'COCO':
-            labels = ["person", "bicycle", "car", "motorcycle", "airplane", "bus", "train", "truck", "boat", "traffic light", 
-                    "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", 
-                    "bear", "zebra", "giraffe", "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard", 
-                    "sports ball", "kite", "baseball bat", "baseball glove", "skateboard", "surfboard", "tennis racket", "bottle", 
-                    "wine glass", "cup", "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange", "broccoli", "carrot", 
-                    "hot dog", "pizza", "donut", "cake", "chair", "couch", "potted plant", "bed", "dining table", "toilet", 
-                    "tv", "laptop", "mouse", "remote", "keyboard", "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator", "book", 
+            labels = ["person", "bicycle", "car", "motorcycle", "airplane", "bus", "train", "truck", "boat", "traffic light",
+                    "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat", "dog", "horse", "sheep", "cow", "elephant",
+                    "bear", "zebra", "giraffe", "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard",
+                    "sports ball", "kite", "baseball bat", "baseball glove", "skateboard", "surfboard", "tennis racket", "bottle",
+                    "wine glass", "cup", "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange", "broccoli", "carrot",
+                    "hot dog", "pizza", "donut", "cake", "chair", "couch", "potted plant", "bed", "dining table", "toilet",
+                    "tv", "laptop", "mouse", "remote", "keyboard", "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator", "book",
                     "clock", "vase", "scissors", "teddy bear", "hair drier", "toothbrush"]
             print("LENGTH: ", len(labels))
         MetadataCatalog.get(self.cfg.DATASETS.TRAIN[0]).thing_classes = labels
@@ -69,7 +69,7 @@ class VizPredictor:
         self.model.eval()
         checkpointer = DetectionCheckpointer(self.model)
         checkpointer.load(cfg.MODEL.WEIGHTS)
-    
+
 
     def __call__(self, image_path):
         with inference_context(self.model), torch.no_grad():
@@ -85,7 +85,7 @@ class VizPredictor:
             transform = T.Resize((800, 800))(auginput)
             image = transform.apply_image(image)
             dataset_dict["image"] = torch.as_tensor(np.ascontiguousarray(image.transpose(2, 0, 1))).float()
-            
+
             # print (dataset_dict["image"].shape)
             # print("image: ", dataset_dict["image"])
             prediction = self.model([dataset_dict])[0]
@@ -129,11 +129,11 @@ class ModifiedInstances:
         # fields["pred_masks"] = prediction['instances'].pred_masks.tolist()
         self["fields"] = fields
         print(self)
-        
+
     def convert_to_json(self):
         json_instances = json.dumps(self.__dict__)
         return json_instances
-    
+
     def convert_to_xml(self):
         xml_instances = dict2xml(self)
         # print("CONVERT: ", xml_instances)
@@ -144,9 +144,9 @@ def convert_instances_to_xml(prediction):
     dict["num_instances"] = len(prediction)
     dict["image_height"] = prediction["instances"].image_size[0]
     dict["image_width"] = prediction["instances"].image_size[1]
-    
+
     fields: OrderedDict[str, Any] = {}
-    
+
     fields["pred_boxes"] = prediction['instances'].pred_boxes.tensor.tolist()
     fields["scores"] = prediction['instances'].scores.tolist()
     fields["pred_classes"] = prediction['instances'].pred_classes.tolist()
@@ -208,9 +208,8 @@ def main(cfg, image_path):
 if __name__ == '__main__':
     config_file = "../configs/COCO/demo_config_COCO.yaml"
     # image_path = r'../data/datasets/VOCdevkit/VOC2007/JPEGImages/000140.jpg'
-
     # r'../demo/images/select_images/A.jpg', r'../demo/images/select_images/B.jpg', r'../demo/images/select_images/C.jpg', r'../demo/images/select_images/D.jpg',
-    
+
     image_paths = [r'../demo/images/select_images/T.jpg']
     # image_path = r'C:/Users/Julia Rosenrauch/Desktop/ENPH479/UniT/demo/images/select_images/A.jpg'
     cfg = setup(config_file)
@@ -225,6 +224,3 @@ if __name__ == '__main__':
         xml_result = convert_instances_to_xml(prediction)
         # print("MOD INSTANCE: ", json_instances)
         # print("XML: ", xml_result)
-
-    
- 
