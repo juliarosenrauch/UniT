@@ -1,42 +1,30 @@
-
 import os
-from os.path import join
 
-import streamlit as st
-import markdowns
-
-import numpy as np
-
-import cv2
-import json
-import sys
-import os
 import torch
-from typing import Any, Dict
+import numpy as np
+import streamlit as st
 
-import sys
-# sys.path.insert(0, '../../')
-# sys.path.insert(0, '../')
+import markdowns
 import visualize
 
-path = os.path.dirname(__file__)
-ROOT_DIR = path+'/images'
+filepath = os.path.dirname(__file__)
+ROOT_DIR = os.path.join(filepath, 'images')
 
 img_data = [
-    join(ROOT_DIR, 'select_images/S.jpg'),
-    join(ROOT_DIR, 'select_images/E.jpg'),
-    join(ROOT_DIR, 'select_images/F.jpg'),
-    join(ROOT_DIR, 'select_images/K.jpg'),
-    join(ROOT_DIR, 'select_images/L.jpg'),
-    join(ROOT_DIR, 'select_images/R.jpg')
+    os.path.join(ROOT_DIR, 'select_images', 'S.jpg'),
+    os.path.join(ROOT_DIR, 'select_images', 'E.JPG'),
+    os.path.join(ROOT_DIR, 'select_images', 'F.jpg'),
+    os.path.join(ROOT_DIR, 'select_images', 'K.jpg'),
+    os.path.join(ROOT_DIR, 'select_images', 'L.jpg'),
+    os.path.join(ROOT_DIR, 'select_images', 'R.jpg')
 ]
 
-global imgs 
+global imgs
 imgs = [open(i, 'rb').read() for i in img_data]
 
 global model_paths
-model_paths = ["../configs/VOC/demo_config_VOC.yaml", 
-               "../configs/COCO/demo_config_COCO.yaml"]
+model_paths = [os.path.join(filepath, '..', 'configs', 'VOC', 'demo_config_VOC.yaml'),
+                os.path.join(filepath, '..', 'configs', 'COCO', 'demo_config_COCO.yaml')]
 
 show_rec = False
 
@@ -49,27 +37,27 @@ def setup_models(model_paths):
 
 def main():
     st.set_page_config(page_title="UniT Model Demo",
-                        page_icon=open(join(ROOT_DIR,'select_images/cvlab.png'), 'rb').read(),
+                        page_icon=open(os.path.join(ROOT_DIR, 'select_images', 'cvlab.png'), 'rb').read(),
                         layout="wide")
-    
+
     st.markdown(markdowns.reconstruction_style, unsafe_allow_html=True)
     st.markdown(markdowns.hide_decoration_bar_style, unsafe_allow_html=True)
     st.markdown(markdowns.hide_main_menu, unsafe_allow_html=True)
     st.markdown(markdowns.page_title, unsafe_allow_html=True)
     st.markdown(markdowns.cv_group_title, unsafe_allow_html=True)
-    
+
     st.markdown(markdowns.motivation_title, unsafe_allow_html=True)
     with st.expander("See more"):
         st.markdown(markdowns.motivation_string, unsafe_allow_html=True)
         _, bcol2, _ = st.columns([1, 1, 1])
-        bcol2.image(open(join(ROOT_DIR,'select_images/image_vs_instance.png'), 'rb').read(), use_column_width=True)
+        bcol2.image(open(os.path.join(ROOT_DIR, 'select_images', 'image_vs_instance.png'), 'rb').read(), use_column_width=True)
 
     st.markdown(markdowns.unit_title, unsafe_allow_html=True)
     with st.expander("See more"):
         st.markdown(markdowns.unit_string, unsafe_allow_html=True)
         st.write("For more details, check out the paper [here](https://arxiv.org/pdf/2006.07502.pdf).")
         _, bcol2, _ = st.columns([1, 1, 1])
-        bcol2.image(open(join(ROOT_DIR,'select_images/unit.png'), 'rb').read(), use_column_width=True)
+        bcol2.image(open(os.path.join(ROOT_DIR, 'select_images' , 'unit.png'), 'rb').read(), use_column_width=True)
 
     model_configs = setup_models(model_paths)
 
@@ -82,7 +70,7 @@ def main():
     selection_columns = st.columns([1,1,1,1,1,1])
     checkboxkey = ['1','2','3','4','5','6']
     selected = [False]*6
-    for i, col in enumerate(selection_columns): 
+    for i, col in enumerate(selection_columns):
         selected[i] = col.checkbox(checkboxkey[i])
 
     images_to_run = []
@@ -90,14 +78,14 @@ def main():
         print("selected stuff: ", np.where(selected)[0])
         for index in np.where(selected)[0]:
             images_to_run.append(img_data[index])
-    
+
     st.markdown(markdowns.upload_file_header, unsafe_allow_html=True)
     uploaded_files = st.file_uploader("Choose a file", accept_multiple_files=True, type=['png','jpeg','jpg'])
     for uploaded_file in uploaded_files:
         bytes_data = uploaded_file.read()
-        uploaded_file_path = os.path.join(ROOT_DIR,uploaded_file.name)
-        with open(uploaded_file_path,"wb") as f: 
-            f.write(uploaded_file.getbuffer()) 
+        uploaded_file_path = os.path.join(ROOT_DIR, uploaded_file.name)
+        with open(uploaded_file_path,"wb") as f:
+            f.write(uploaded_file.getbuffer())
 
         images_to_run.append(uploaded_file_path)
 
@@ -110,7 +98,7 @@ def main():
     selected_model = st.selectbox("Model options", model_options)
 
     model_cfg = None
-    
+
     if selected_model == "VOC":
         model_cfg = model_configs[0]
 
@@ -133,7 +121,7 @@ def main():
         else:
             # st.markdown(markdowns.try_again_line, unsafe_allow_html=True)
             st.error("Please select or upload an image above and run again!")
-        
+
         result_images = []
         xml_results = []
 
@@ -159,9 +147,9 @@ def main():
         with col_dl:
             st.markdown(markdowns.button_style, unsafe_allow_html=True)
             st.download_button(
-                label = 'Download results', 
-                data = xml_result, 
-                file_name = "unit_demo_results.xml", 
+                label = 'Download results',
+                data = xml_result,
+                file_name = "unit_demo_results.xml",
                 mime='application/xml')
 
     st.text("")
