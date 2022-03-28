@@ -109,7 +109,7 @@ class VizPredictor:
             v = v.draw_instance_predictions(prediction["instances"].to("cpu"))
             # test_img = v.get_image()[:, :, ::-1]
             test_img = v.get_image()[:, :, :]
-            cv2.imshow("result", test_img)
+            # cv2.imshow("result", test_img)
             # cv2.waitKey(0)
             # cv2.destroyAllWindows()
             # out_file_name = "000140_processed.png"
