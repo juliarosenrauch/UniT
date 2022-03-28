@@ -14,7 +14,7 @@ from detectron2.utils.logger import log_first_n
 from detectron2.structures import ImageList
 from detectron2.data import transforms as T
 from detectron2.structures import Boxes, Instances
-from detectron2.modeling.roi_heads.fast_rcnn import FastRCNNOutputLayers, FastRCNNOutputs, fast_rcnn_inference
+from detectron2.modeling.roi_heads.fast_rcnn import fast_rcnn_inference
 import cv2
 from ..roi_heads.fast_rcnn import FastRCNNOutputsReduction
 
@@ -261,7 +261,8 @@ class WeaklySupervisedRCNN(GeneralizedRCNN):
         images = [x["image"].to(self.device) for x in batched_inputs]
         if self.normalize_images:
             images = [x/255.0 for x in images]
-        images = [(x - self.pixel_mean) / self.pixel_std for x in images]
+        # print("size of image: ", images.size)
+        # images = [(x - self.pixel_mean) / self.pixel_std for x in images]
         images = ImageList.from_tensors(images, self.backbone.size_divisibility)
         return images
 
