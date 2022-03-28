@@ -23,6 +23,7 @@ from detectron2.modeling import build_model
 from detectron2.utils.visualizer import Visualizer
 from detectron2.checkpoint import DetectionCheckpointer
 from configs import add_config
+from modeling.meta_arch import rcnn
 from dict2xml import dict2xml
 from collections import OrderedDict
 from xml.etree import ElementTree as ET

@@ -1,6 +1,6 @@
 _BASE_: "../Base-RCNN-C4.yaml"
 MODEL:
-  WEIGHTS: "C:/Users/Julia Rosenrauch/Desktop/ENPH479/UniT/models/VOC_split1.pth"
+  WEIGHTS: "../../models/VOC_split1.pth"
   META_ARCHITECTURE: "WeaklySupervisedRCNNNoMeta"
   MASK_ON: True
   BACKBONE: 
@@ -12,7 +12,7 @@ MODEL:
     NAME: "WSROIHeadNoMeta"
     MULTI_BOX_HEAD: True
     NUM_CLASSES: 20
-    EMBEDDING_PATH: "C:/Users/Julia Rosenrauch/Desktop/ENPH479/UniT/data/embeddings/glove_mean"
+    EMBEDDING_PATH: "../../data/embeddings/glove_mean"
     FAST_RCNN:
       NAME: "SupervisedDetectorOutputsBase"
       WEAK_DETECTOR:
