@@ -1,6 +1,6 @@
 _BASE_: "../Base-RCNN-C4.yaml"
 MODEL:
-  WEIGHTS: "../../models/best_model_final_weights.pth"
+  WEIGHTS: "C:/Users/Julia Rosenrauch/Desktop/ENPH479/UniT/models/best_model_final_weights.pth"
   META_ARCHITECTURE: "WeaklySupervisedRCNNNoMeta"
   MASK_ON: True
   BACKBONE: 
@@ -17,7 +17,7 @@ MODEL:
     NAME: "WSROIHeadWithMaskFineTune"
     MULTI_BOX_HEAD: True
     NUM_CLASSES: 80
-    EMBEDDING_PATH: "../../data/embeddings/glove_mean"
+    EMBEDDING_PATH: "C:/Users/Julia Rosenrauch/Desktop/ENPH479/UniT/data/embeddings/glove_mean"
     FAST_RCNN:
       NAME: "SupervisedDetectorOutputsFineTune"
       WEAK_DETECTOR:
