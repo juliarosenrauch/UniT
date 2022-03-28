@@ -71,7 +71,6 @@ class VizPredictor:
         checkpointer = DetectionCheckpointer(self.model)
         checkpointer.load(cfg.MODEL.WEIGHTS)
 
-
     def __call__(self, image_path):
         with inference_context(self.model), torch.no_grad():
 
