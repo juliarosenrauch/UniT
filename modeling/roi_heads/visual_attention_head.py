@@ -9,7 +9,7 @@ from detectron2.config import configurable
 from detectron2.layers import batched_nms
 from detectron2.modeling.box_regression import Box2BoxTransform
 from detectron2.structures import Boxes, Instances
-from detectron2.modeling.roi_heads.fast_rcnn import FastRCNNOutputLayers, FastRCNNOutputs
+from detectron2.modeling.roi_heads.fast_rcnn import FastRCNNOutputLayers
 from detectron2.layers import Linear, ShapeSpec, batched_nms, cat, nonzero_tuple
 from detectron2.structures import Instances, Boxes, pairwise_iou
 from detectron2.utils.registry import Registry

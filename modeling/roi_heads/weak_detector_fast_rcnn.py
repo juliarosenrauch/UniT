@@ -9,7 +9,7 @@ from detectron2.config import configurable
 from detectron2.layers import batched_nms
 from detectron2.modeling.box_regression import Box2BoxTransform
 from detectron2.structures import Boxes, Instances
-from detectron2.modeling.roi_heads.fast_rcnn import FastRCNNOutputLayers, FastRCNNOutputs, fast_rcnn_inference
+from detectron2.modeling.roi_heads.fast_rcnn import FastRCNNOutputLayers, fast_rcnn_inference
 from detectron2.layers import Linear, ShapeSpec, batched_nms, cat, nonzero_tuple
 from detectron2.structures import Instances, Boxes, pairwise_iou
 from detectron2.utils.registry import Registry
@@ -20,7 +20,7 @@ from .pcl_loss import PCLFunction
 
 WEAK_DETECTOR_FAST_RCNN_REGISTRY = Registry("WEAK_DETECTOR_FAST_RCNN")
 
-class FastRCNNOutputsRegression(FastRCNNOutputs):
+class FastRCNNOutputsRegression(FastRCNNOutputLayers):
     def __init__(self, box2box_transform, pred_class_logits, pred_proposal_deltas, proposals, weights, smooth_l1_beta=0.0, box_reg_loss_type="smooth_l1"):
         super().__init__(box2box_transform=box2box_transform, pred_class_logits=pred_class_logits, pred_proposal_deltas=pred_proposal_deltas, proposals=proposals, smooth_l1_beta=smooth_l1_beta, box_reg_loss_type=box_reg_loss_type)
         self.weights = weights
