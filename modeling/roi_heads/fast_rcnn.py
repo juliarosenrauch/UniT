@@ -9,7 +9,7 @@ from detectron2.config import configurable
 from detectron2.layers import batched_nms
 from detectron2.modeling.box_regression import Box2BoxTransform
 from detectron2.structures import Boxes, Instances
-from detectron2.modeling.roi_heads.fast_rcnn import FastRCNNOutputLayers, FastRCNNOutputs, fast_rcnn_inference
+from detectron2.modeling.roi_heads.fast_rcnn import FastRCNNOutputLayers, fast_rcnn_inference
 from detectron2.layers import Linear, ShapeSpec, batched_nms, cat, nonzero_tuple
 from detectron2.structures import Instances, Boxes, pairwise_iou
 from detectron2.utils.registry import Registry
@@ -21,7 +21,7 @@ from fvcore.nn import giou_loss, smooth_l1_loss
 
 FAST_RCNN_REGISTRY = Registry("FAST_RCNN_REGISTRY")
 
-class FastRCNNOutputsReduction(FastRCNNOutputs):
+class FastRCNNOutputsReduction(FastRCNNOutputLayers):
     def softmax_cross_entropy_loss(self):
         """
         Compute the softmax cross entropy loss for box classification.
@@ -100,7 +100,7 @@ class FastRCNNOutputsReduction(FastRCNNOutputs):
         loss_box_reg = loss_box_reg / self.gt_classes.numel()
         return loss_box_reg  
 
-class FastRCNNOutputsNLL(FastRCNNOutputs):
+class FastRCNNOutputsNLL(FastRCNNOutputLayers):
     def softmax_cross_entropy_loss(self):
         if self._no_instances:
             return 0.0 * self.pred_class_logits.sum()
@@ -114,7 +114,7 @@ class FastRCNNOutputsNLL(FastRCNNOutputs):
         """
         return probs.split(self.num_preds_per_image, dim=0)
 
-class FastRCNNOutputsRegression(FastRCNNOutputs):
+class FastRCNNOutputsRegression(FastRCNNOutputLayers):
     def __init__(self, box2box_transform, pred_class_logits, pred_proposal_deltas, proposals, weights, smooth_l1_beta=0.0, box_reg_loss_type="smooth_l1"):
         super().__init__(box2box_transform=box2box_transform, pred_class_logits=pred_class_logits, pred_proposal_deltas=pred_proposal_deltas, proposals=proposals, smooth_l1_beta=smooth_l1_beta, box_reg_loss_type=box_reg_loss_type)
         self.weights = weights
@@ -435,7 +435,7 @@ class SupervisedDetectorOutputsBase(FastRCNNOutputLayers):
     def losses(self, predictions, proposals, weak_predictions=None, weak_proposals=None, weak_targets=None, train_only_weak=False):
         if not train_only_weak:
             scores, proposal_deltas = predictions
-            final_losses = FastRCNNOutputs(
+            final_losses = FastRCNNOutputLayers(
                 self.box2box_transform,
                 scores,
                 proposal_deltas,
