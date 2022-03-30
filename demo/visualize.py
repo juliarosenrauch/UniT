@@ -65,11 +65,23 @@ class VizPredictor:
                     "tv", "laptop", "mouse", "remote", "keyboard", "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator", "book",
                     "clock", "vase", "scissors", "teddy bear", "hair drier", "toothbrush"]
             print("LENGTH: ", len(labels))
+
+
+        memory_free = os.system('cat /proc/meminfo | grep MemFree')
+        print(memory_free)
+
         MetadataCatalog.get(self.cfg.DATASETS.TRAIN[0]).thing_classes = labels
         self.model = build_model(self.cfg)
         self.model.eval()
         checkpointer = DetectionCheckpointer(self.model)
+
+        memory_free = os.system('cat /proc/meminfo | grep MemFree')
+        print(memory_free)
+        
         checkpointer.load(cfg.MODEL.WEIGHTS)
+
+        memory_free = os.system('cat /proc/meminfo | grep MemFree')
+        print(memory_free)
 
     def __call__(self, image_path):
         with inference_context(self.model), torch.no_grad():
@@ -86,10 +98,15 @@ class VizPredictor:
             image = transform.apply_image(image)
             dataset_dict["image"] = torch.as_tensor(np.ascontiguousarray(image.transpose(2, 0, 1))).float()
 
+            memory_free = os.system('cat /proc/meminfo | grep MemFree')
+            print(memory_free)
+
             # print (dataset_dict["image"].shape)
             # print("image: ", dataset_dict["image"])
             prediction = self.model([dataset_dict])[0]
 
+            memory_free = os.system('cat /proc/meminfo | grep MemFree')
+            print(memory_free)
             # print(prediction)
 
             scores = prediction['instances'].scores
@@ -105,6 +122,10 @@ class VizPredictor:
                         MetadataCatalog.get(self.cfg.DATASETS.TRAIN[0]),
                         scale=1.0,
                         instance_mode=ColorMode.SEGMENTATION)
+            
+            memory_free = os.system('cat /proc/meminfo | grep MemFree')
+            print(memory_free)
+            
             v = v.draw_instance_predictions(prediction["instances"].to("cpu"))
             # test_img = v.get_image()[:, :, ::-1]
             test_img = v.get_image()[:, :, :]
