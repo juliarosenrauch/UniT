@@ -37,10 +37,10 @@ def print_resources(memo):
 dataAvailable = False
 if not dataAvailable:
     print("unzipping data")
-    os.system('cat best_model_final_weights.zip* > ~/best_model_final_weights.zip')
+    os.system('cat best_model_final_weights.z* > ~/best_model_final_weights.zip')
     os.system('unzip best_model_final_weights.zip')
 
-    os.system('cat VOC_split1.zip* > ~/VOC_split1.zip')
+    os.system('cat VOC_split1.z* > ~/VOC_split1.zip')
     os.system('unzip VOC_split1.zip')
     dataAvailable = True
     print_resources("unzipping")
