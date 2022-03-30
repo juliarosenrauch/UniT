@@ -1,5 +1,5 @@
 import os
-
+import zipfile
 import torch
 import numpy as np
 import streamlit as st
@@ -40,10 +40,19 @@ if not dataAvailable:
     os.system('unzip -v')
     print("unzipping data")
     os.system('cat /app/unit/models/best_model_final_weights.z* > /app/unit/models/best_model_final_weights.zip')
-    os.system('unzip /app/unit/models/best_model_final_weights.zip')
+    # os.system('unzip /app/unit/models/best_model_final_weights.zip')
 
     os.system('cat /app/unit/models/VOC_split1.z* > /app/unit/models/VOC_split1.zip')
-    os.system('unzip /app/unit/models/VOC_split1.zip')
+    # os.system('unzip /app/unit/models/VOC_split1.zip')
+
+    with zipfile.ZipFile('/app/unit/models/best_model_final_weights.zip', 'r') as zip_ref:
+        zip_ref.extractall('/app/unit/models/')
+
+    with zipfile.ZipFile('/app/unit/models/VOC_split1.zip', 'r') as zip_ref:
+        zip_ref.extractall('/app/unit/models/')
+
+
+
     dataAvailable = True
     print_resources("unzipping")
 
