@@ -8,3 +8,4 @@ pycparser==2.21
 streamlit==1.8.0
 https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.10/detectron2-0.6%2Bcpu-cp39-cp39-linux_x86_64.whl
 scikit-learn==1.0.2
+click==8

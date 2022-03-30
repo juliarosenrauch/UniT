@@ -28,17 +28,27 @@ model_paths = [os.path.join(filepath, '..', 'configs', 'VOC', 'demo_config_VOC.y
 
 show_rec = False
 
+
+def print_resources(memo):
+    print(memo)
+    memory_free = os.system('cat /proc/meminfo | grep MemFree')
+    print(memory_free)
+
 dataAvailable = False
 if not dataAvailable:
+    print("unzipping data")
     os.system('cat best_model_final_weights.zip* > ~/best_model_final_weights.zip')
     os.system('unzip best_model_final_weights.zip')
 
     os.system('cat VOC_split1.zip* > ~/VOC_split1.zip')
     os.system('unzip VOC_split1.zip')
     dataAvailable = True
+    print_resources("unzipping")
+
 
 @st.cache(allow_output_mutation=True)
 def setup_models(model_paths):
+    print_resources()
     configs = []
     for path in model_paths:
         configs.append(visualize.setup(path))
@@ -68,7 +78,9 @@ def main():
         _, bcol2, _ = st.columns([1, 1, 1])
         bcol2.image(open(os.path.join(ROOT_DIR, 'select_images' , 'unit.png'), 'rb').read(), use_column_width=True)
 
+    print_resources("pre setup models")
     model_configs = setup_models(model_paths)
+    print_resources("post setup models")
 
     st.markdown(markdowns.object_selection_header, unsafe_allow_html=True)
 
@@ -136,7 +148,9 @@ def main():
 
         with st.spinner(text="Hold tight! It's running..."):
             for image in images_to_run:
+                print_resources("pre visualize")
                 result_image, xml_result = visualize.main(model_cfg, image)
+                print_resources("post visualize")
                 result_images.append(result_image)
                 xml_results.append(xml_result)
 
