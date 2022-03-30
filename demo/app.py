@@ -28,6 +28,15 @@ model_paths = [os.path.join(filepath, '..', 'configs', 'VOC', 'demo_config_VOC.y
 
 show_rec = False
 
+dataAvailable = False
+if not dataAvailable:
+    os.system('cat best_model_final_weights.zip* > ~/best_model_final_weights.zip')
+    os.system('unzip best_model_final_weights.zip')
+
+    os.system('cat VOC_split1.zip* > ~/VOC_split1.zip')
+    os.system('unzip VOC_split1.zip')
+    dataAvailable = True
+
 @st.cache(allow_output_mutation=True)
 def setup_models(model_paths):
     configs = []
