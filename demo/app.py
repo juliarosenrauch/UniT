@@ -36,6 +36,8 @@ def print_resources(memo):
 
 dataAvailable = False
 if not dataAvailable:
+    os.system('sudo apt install unzip')
+    os.system('unzip -v')
     print("unzipping data")
     os.system('cat /app/unit/models/best_model_final_weights.z* > /app/unit/models/best_model_final_weights.zip')
     os.system('unzip /app/unit/models/best_model_final_weights.zip')
