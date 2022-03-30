@@ -48,7 +48,7 @@ if not dataAvailable:
 
 @st.cache(allow_output_mutation=True)
 def setup_models(model_paths):
-    print_resources()
+    print_resources("setup model configs")
     configs = []
     for path in model_paths:
         configs.append(visualize.setup(path))
