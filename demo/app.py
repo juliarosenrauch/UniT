@@ -38,23 +38,24 @@ dataAvailable = False
 if not dataAvailable:
     # os.system('sudo apt install unzip')
     # os.system('unzip -v')
-    print("unzipping data")
-    os.system('cat /app/unit/models/best_model_final_weights.z* > /app/unit/models/best_model_final_weights.zip')
+    print("putting back data")
+    os.system('cat /app/unit/models/best_model-parta* > /app/unit/models/best_model_final_weights.pth')
+    #os.system('cat /app/unit/models/best_model_final_weights.z* > /app/unit/models/best_model_final_weights.zip')
     # os.system('unzip /app/unit/models/best_model_final_weights.zip')
 
-    os.system('cat /app/unit/models/VOC_split1.z* > /app/unit/models/VOC_split1.zip')
+    os.system('cat /app/unit/models/VOC_split-parta* > /app/unit/models/VOC_split1.pth')
     # os.system('unzip /app/unit/models/VOC_split1.zip')
 
-    with zipfile.ZipFile('/app/unit/models/best_model_final_weights.zip', 'r') as zip_ref:
-        zip_ref.extractall('/app/unit/models/')
+    # with zipfile.ZipFile('/app/unit/models/best_model_final_weights.zip', 'r') as zip_ref:
+    #     zip_ref.extractall('/app/unit/models/')
 
-    with zipfile.ZipFile('/app/unit/models/VOC_split1.zip', 'r') as zip_ref:
-        zip_ref.extractall('/app/unit/models/')
+    # with zipfile.ZipFile('/app/unit/models/VOC_split1.zip', 'r') as zip_ref:
+    #     zip_ref.extractall('/app/unit/models/')
 
 
 
     dataAvailable = True
-    print_resources("unzipping")
+    print_resources("concatenating")
 
 
 @st.cache(allow_output_mutation=True)
